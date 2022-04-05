@@ -37,7 +37,7 @@ const Conversation = () => {
     }
   }, [conversation]);
 
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const messageDoc = {
@@ -45,11 +45,13 @@ const Conversation = () => {
       content: text,
       sentAt: Timestamp.fromMillis(Date.now()),
       userId: auth.currentUser?.uid,
-    }
+    };
 
-    setDoc(doc(firestore, 'conversations', conversationId, 'messages', Date.now().toString()), messageDoc)
-      .then(() => changeText(''))
-      .catch(error => console.error(error))
+    if (text.length > 0) {
+      await setDoc(doc(firestore, 'conversations', conversationId, 'messages', Date.now().toString()), messageDoc)
+      changeText('')
+    };
+    
   }
 
   return (
@@ -86,7 +88,7 @@ const Conversation = () => {
 
       <form className={styles['chat-box-form']} onSubmit={handleFormSubmit}>
         <textarea placeholder='Send a message' className={styles['chat-box']} value={text} onChange={e => changeText(e.target.value)} />
-        <IconButton type='submit' color='primary' className={styles['send-button']}>
+        <IconButton type='submit' color='primary' disabled={text.length > 0} className={styles['send-button']}>
           <SendRounded />
         </IconButton>
       </form>
