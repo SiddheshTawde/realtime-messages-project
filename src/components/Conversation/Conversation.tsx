@@ -88,7 +88,7 @@ const Conversation = () => {
 
       <form className={styles['chat-box-form']} onSubmit={handleFormSubmit}>
         <textarea placeholder='Send a message' className={styles['chat-box']} value={text} onChange={e => changeText(e.target.value)} />
-        <IconButton type='submit' color='primary' disabled={text.length > 0} className={styles['send-button']}>
+        <IconButton type='submit' color='primary' disabled={text.length === 0} className={styles['send-button']}>
           <SendRounded />
         </IconButton>
       </form>
