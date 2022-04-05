@@ -63,7 +63,7 @@ const Conversation = () => {
         </Toolbar>
       </AppBar>
 
-      <List style={{ flex: 1 }}>
+      <List className={styles['list-container']}>
         {messages?.docs.map(message =>
           <ListItem key={message.id} className={styles['message']} style={{ alignItems: message.data()?.userId === auth.currentUser?.uid ? 'flex-end' : 'flex-start' }}>
             {message.data()?.userId === auth.currentUser?.uid ?
@@ -91,7 +91,7 @@ const Conversation = () => {
         </IconButton>
       </form>
 
-    </Container>
+    </Container >
   )
 }
 

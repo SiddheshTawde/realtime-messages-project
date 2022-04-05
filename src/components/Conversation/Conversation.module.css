@@ -48,3 +48,9 @@
     margin-left: 4px;
     white-space: pre;
 }
+
+.list-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 128px);
+}
