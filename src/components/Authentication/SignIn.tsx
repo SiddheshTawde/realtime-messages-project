@@ -7,7 +7,7 @@ import { auth } from '../../firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { firestore } from '../../firebase/database';
 
-import Google from './btn_google_dark_normal_ios.svg';
+import Google from './SignInWithGoogle.png';
 
 const SignIn: FunctionComponent = () => {
     const handleGoogleSignIn = async () => {
@@ -41,9 +41,8 @@ const SignIn: FunctionComponent = () => {
                     <Typography variant='body1' sx={{ fontSize: 56, fontWeight: 'bold' }}>LOGO</Typography>
                 </Box>
                 <Box className={styles['box-element']}>
-                    <Button variant='contained' onClick={handleGoogleSignIn} className={styles['sign-in-button']}>
-                        <img src={Google} style={{ marginRight: 12 }} />
-                        Sign in with Google
+                    <Button variant='text' onClick={handleGoogleSignIn}>
+                        <img src={Google} className={styles['sign-in-button']} />
                     </Button>
                 </Box>
             </Box>

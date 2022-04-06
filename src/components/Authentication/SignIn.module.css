@@ -21,9 +21,8 @@
 }
 
 .sign-in-button {
-    padding: 0 12px 0 0;
-    color: #FFFFFF;
-    background-color: #4285F4;
+    height: auto;
+    width: 192px;
 }
 
 @media screen and (max-width: 448px) {

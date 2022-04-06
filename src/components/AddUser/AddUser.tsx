@@ -1,8 +1,7 @@
 import { async } from '@firebase/util'
 import { ArrowBackRounded } from '@mui/icons-material'
-import { AppBar, Avatar, Container, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
+import { AppBar, Avatar, Container, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
-import { Fragment } from 'react'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../../firebase/auth'
@@ -17,7 +16,7 @@ const AddUser = () => {
         const result = await getDocs(query(collection(firestore, 'conversations'), where('participants', 'array-contains-any', [auth.currentUser?.uid.trim(), uid.trim()])));
 
         if (result.size > 0) {
-            location.replace('conversation/' + result.docs.map(doc => doc.id))
+            window.location.replace('conversation/' + result.docs.map(doc => doc.id))
         } else {
 
             const newDoc = await addDoc(collection(firestore, 'conversations'), {
@@ -28,7 +27,7 @@ const AddUser = () => {
                 photoURL: ""
             })
 
-            location.replace('conversation/' + newDoc.id)
+            window.location.replace('conversation/' + newDoc.id)
         }
 
     }
@@ -44,7 +43,7 @@ const AddUser = () => {
                 </Toolbar>
             </AppBar>
 
-            <Paper elevation={0} style={{ flex: 1, borderRadius: 16, margin: 8 }}>
+            <Paper elevation={0} style={{ flex: 1, borderRadius: 16, margin: 16 }}>
                 <List>
                     {users?.docs.map(user =>
                         auth.currentUser?.uid !== user.data().uid ?

@@ -13,7 +13,7 @@ import styles from './Conversation.module.css'
 const Conversation = () => {
   const navigate = useNavigate();
 
-  const conversationId = useMemo(() => location.pathname.split('/')[location.pathname.split('/').length - 1], [])
+  const conversationId = useMemo(() => window.location.pathname.split('/')[window.location.pathname.split('/').length - 1], [])
 
   const [text, changeText] = useState('');
 
