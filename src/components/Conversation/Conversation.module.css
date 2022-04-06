@@ -23,7 +23,7 @@
     justify-content: flex-start;
     padding: 12px 24px;
     width: fit-content;
-    background-color: #A1EEFF;
+    background-color: #EADDFF;
     border-radius: 12px 0 12px 12px;
     margin-right: 4px;
     white-space: pre;
@@ -34,14 +34,14 @@
 .self-message-secondary {
     font-size: 10px;
     color: #004E5B;
-    background-color: #A1EEFF;
+    background-color: #EADDFF;
 }
 
 .other-message {
     padding: 12px 24px;
     width: fit-content;
     color: #FFFFFF;
-    background-color: #004E5B;
+    background-color: #625B71;
     border-radius: 0 12px 12px 12px;
     margin-left: 4px;
     white-space: pre;
@@ -52,7 +52,7 @@
 .other-message-secondary {
     font-size: 10px;
     color: #FFFFFF;
-    background-color: #004E5B;
+    background-color: #625B71;
 }
 
 .chat-box-form {

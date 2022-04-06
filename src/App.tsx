@@ -18,17 +18,13 @@ function App() {
     palette: {
       mode: "light",
       primary: {
-        main: '#A1EEFF',
+        main: '#EADDFF',
       },
       secondary: {
-        main: '#004E5B'
+        main: '#625B71'
       },
       background: {
-        default: '#004E5B'
-      },
-      text: {
-        primary: '#004E5B',
-        secondary: '#004E5B'
+        default: '#EADDFF'
       }
     },
     components: {
