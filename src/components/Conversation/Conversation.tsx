@@ -68,7 +68,7 @@ const Conversation = () => {
         </Toolbar>
       </AppBar>
 
-      <Paper sx={{ borderRadius: 4, margin: 1, flex: 1, display: 'flex' }} elevation={0}>
+      <Paper sx={{ borderRadius: 4, margin: 2, flex: 1, display: 'flex' }} elevation={0}>
         <List className={styles['list-container']}>
           {messages?.docs.map(message =>
             <ListItem key={message.id} className={styles['message']} style={{ alignItems: message.data()?.userId === auth.currentUser?.uid ? 'flex-end' : 'flex-start' }}>

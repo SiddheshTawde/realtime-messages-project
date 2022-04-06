@@ -28,6 +28,7 @@
     margin-right: 4px;
     white-space: pre;
     text-align: left;
+    min-width: 140px;
 }
 
 .self-message-secondary {
@@ -45,6 +46,7 @@
     margin-left: 4px;
     white-space: pre;
     text-align: right;
+    min-width: 140px;
 }
 
 .other-message-secondary {

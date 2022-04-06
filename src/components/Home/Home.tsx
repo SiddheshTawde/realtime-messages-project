@@ -39,7 +39,7 @@ const Home = () => {
         </Toolbar>
       </AppBar>
 
-      <Paper sx={{ borderRadius: 4, margin: 1, flex: 1 }} elevation={0}>
+      <Paper sx={{ borderRadius: 4, margin: 2, flex: 1 }} elevation={0}>
         <List>
           {conversations?.docs.map((conversation, index) => <ConversationItem key={index} conversation={conversation} />)}
         </List>

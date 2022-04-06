@@ -9,10 +9,10 @@ export default defineConfig({
     VitePWA({
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Name of your app',
-        short_name: 'Short name of your app',
-        description: 'Description of your app',
-        theme_color: '#ffffff',
+        name: 'Messaging',
+        short_name: 'Messaging',
+        description: 'Realtime Messaging Project',
+        theme_color: '#A1EEFF',
         icons: [
           {
             src: 'pwa-192x192.png',
