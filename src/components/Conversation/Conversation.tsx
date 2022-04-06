@@ -1,5 +1,5 @@
-import { ArrowBackRounded, SendRounded } from '@mui/icons-material'
-import { AppBar, Container, IconButton, List, ListItem, ListItemText, Toolbar, Typography } from '@mui/material'
+import { ArrowBackRounded, SearchRounded, SendRounded } from '@mui/icons-material'
+import { AppBar, Button, Container, IconButton, List, ListItem, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
 import { collection, doc, getDoc, setDoc, Timestamp } from 'firebase/firestore'
 import moment from 'moment'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
@@ -51,46 +51,51 @@ const Conversation = () => {
       await setDoc(doc(firestore, 'conversations', conversationId, 'messages', Date.now().toString()), messageDoc)
       changeText('')
     };
-    
+
   }
 
   return (
     <Container component='main' disableGutters={true} className={styles['main-container']}>
-      <AppBar position='static'>
+      <AppBar position='static' elevation={0}>
         <Toolbar>
           <IconButton onClick={() => navigate('/', { replace: false })}>
             <ArrowBackRounded />
           </IconButton>
-          <Typography variant='body1' sx={{ ml: 2 }}>{name}</Typography>
+          <Typography variant='h5' sx={{ ml: 2, flex: 1 }}>{name}</Typography>
+          <IconButton>
+            <SearchRounded />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
-      <List className={styles['list-container']}>
-        {messages?.docs.map(message =>
-          <ListItem key={message.id} className={styles['message']} style={{ alignItems: message.data()?.userId === auth.currentUser?.uid ? 'flex-end' : 'flex-start' }}>
-            {message.data()?.userId === auth.currentUser?.uid ?
-              <ListItemText
-                className={styles['self-message']}
-                primary={message.data().content}
-                secondary={moment(new Timestamp(message.data().sentAt.seconds, message.data().sentAt.nanoseconds).toDate()).fromNow()}
-                secondaryTypographyProps={{ style: { fontSize: 10 } }}
-              /> :
-              <ListItemText
-                className={styles['other-message']}
-                primary={message.data().content}
-                secondary={moment(new Timestamp(message.data().sentAt.seconds, message.data().sentAt.nanoseconds).toDate()).fromNow()}
-                secondaryTypographyProps={{ style: { fontSize: 10 } }}
-              />
-            }
-          </ListItem>
-        )}
-      </List>
+      <Paper sx={{ borderRadius: 4, margin: 1, flex: 1, display: 'flex' }} elevation={0}>
+        <List className={styles['list-container']}>
+          {messages?.docs.map(message =>
+            <ListItem key={message.id} className={styles['message']} style={{ alignItems: message.data()?.userId === auth.currentUser?.uid ? 'flex-end' : 'flex-start' }}>
+              {message.data()?.userId === auth.currentUser?.uid ?
+                <ListItemText
+                  className={styles['self-message']}
+                  primary={message.data().content}
+                  secondary={moment(new Timestamp(message.data().sentAt.seconds, message.data().sentAt.nanoseconds).toDate()).fromNow()}
+                  secondaryTypographyProps={{ className: styles['self-message-secondary'] }}
+                /> :
+                <ListItemText
+                  className={styles['other-message']}
+                  primary={message.data().content}
+                  secondary={moment(new Timestamp(message.data().sentAt.seconds, message.data().sentAt.nanoseconds).toDate()).fromNow()}
+                  secondaryTypographyProps={{ className: styles['other-message-secondary'] }}
+                />
+              }
+            </ListItem>
+          )}
+        </List>
+      </Paper>
 
       <form className={styles['chat-box-form']} onSubmit={handleFormSubmit}>
-        <textarea placeholder='Send a message' className={styles['chat-box']} value={text} onChange={e => changeText(e.target.value)} />
-        <IconButton type='submit' color='primary' disabled={text.length === 0} className={styles['send-button']}>
+        <textarea placeholder='Send a message' className={styles['chat-box-input']} value={text} onChange={e => changeText(e.target.value)} />
+        <Button variant='contained' type='submit' color='secondary' disabled={text.length === 0} className={styles['send-button']}>
           <SendRounded />
-        </IconButton>
+        </Button>
       </form>
 
     </Container >

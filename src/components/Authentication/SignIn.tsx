@@ -7,12 +7,14 @@ import { auth } from '../../firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { firestore } from '../../firebase/database';
 
+import Google from './btn_google_dark_normal_ios.svg';
+
 const SignIn: FunctionComponent = () => {
     const handleGoogleSignIn = async () => {
 
         try {
             const result = await signInWithPopup(auth, new GoogleAuthProvider());
-            
+
             const userDoc = {
                 displayName: result.user.displayName,
                 email: result.user.email,
@@ -34,14 +36,17 @@ const SignIn: FunctionComponent = () => {
 
     return (
         <Container component='main' className={styles['main-container']} disableGutters={true} maxWidth='xs'>
-            <Card className={styles['card-container']}>
+            <Box className={styles['card-container']}>
                 <Box className={styles['box-element']}>
-                    <Typography variant='h3'>Realtime Messages Project</Typography>
+                    <Typography variant='body1' sx={{ fontSize: 56, fontWeight: 'bold' }}>LOGO</Typography>
                 </Box>
                 <Box className={styles['box-element']}>
-                    <Button variant='contained' onClick={handleGoogleSignIn}>Sign In</Button>
+                    <Button variant='contained' onClick={handleGoogleSignIn} className={styles['sign-in-button']}>
+                        <img src={Google} style={{ marginRight: 12 }} />
+                        Sign in with Google
+                    </Button>
                 </Box>
-            </Card>
+            </Box>
         </Container>
     )
 }
