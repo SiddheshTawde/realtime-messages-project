@@ -3,7 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { auth } from './firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Global from './components/Loaders/Global';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import { lightTheme } from './theme';
 
 const SignInPage = lazy(() => import('./components/Authentication/SignIn'));
 const HomePage = lazy(() => import('./components/Home/Home'));
@@ -13,52 +14,12 @@ const AddUserPage = lazy(() => import('./components/AddUser/AddUser'));
 function App() {
   const [user, loading, error] = useAuthState(auth);
 
-
-  const theme = createTheme({
-    palette: {
-      mode: "light",
-      primary: {
-        main: '#EADDFF',
-      },
-      secondary: {
-        main: '#625B71'
-      },
-      background: {
-        default: '#EADDFF'
-      }
-    },
-    components: {
-      MuiButton: {
-        defaultProps: {
-          style: {
-            textTransform: 'none'
-          }
-        }
-      },
-      MuiListItem: {
-        defaultProps: {
-          style: {
-            paddingLeft: 0,
-            paddingRight: 0
-          }
-        }
-      },
-      MuiAvatar: {
-        styleOverrides: {
-          rounded: {
-            borderRadius: 8
-          }
-        }
-      }
-    }
-  })
-
   if (loading) {
     return <Global />
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={lightTheme}>
       <BrowserRouter>
         <Routes>
           <Route path='/sign-in' element={user ? <Navigate to='/' /> : <Suspense fallback={<Global />}><SignInPage /></Suspense>} />

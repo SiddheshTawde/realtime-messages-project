@@ -1,7 +1,7 @@
-import { AppBar, Avatar, Box, Button, Container, Divider, Drawer, Fab, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
+import { AppBar, Avatar, Badge, Box, Button, Chip, Container, Divider, Drawer, Fab, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase/auth'
-import { collection, doc, DocumentData, getDoc, limit, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDoc, limit, orderBy, query, Timestamp, updateDoc } from 'firebase/firestore';
 import { firestore } from '../../firebase/database';
 import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -9,13 +9,23 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
 import styles from './Home.module.css';
-import { PersonAddRounded, SearchRounded } from '@mui/icons-material';
+import { SearchRounded } from '@mui/icons-material';
 
 const Home = () => {
   const navigate = useNavigate();
 
   const [profile, toggleProfile] = useState(false);
   const [conversations, loading, error] = useCollection(collection(firestore, 'conversations'));
+
+  useEffect(() => {
+    updateDoc(doc(collection(firestore, 'users'), auth.currentUser?.uid), { isActive: true, lastSignInTime: moment(Date.now()).format('llll') })
+      .catch(error => console.error(error))
+
+    return () => {
+      updateDoc(doc(collection(firestore, 'users'), auth.currentUser?.uid), { isActive: false, lastSignInTime: moment(Date.now()).format('llll') })
+        .catch(error => console.error(error))
+    }
+  }, [])
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -46,15 +56,15 @@ const Home = () => {
       </Paper>
 
       <Drawer anchor='bottom' open={profile} onClose={() => toggleProfile(false)} PaperProps={{ className: styles['user-profile-paper'] }}>
-        <Box className={styles['profile-container']}>
+        <Container maxWidth='md' className={styles['profile-container']}>
           <Avatar variant='rounded' src={auth.currentUser?.photoURL || ''} style={{ width: 76, height: 76, marginBottom: 12 }} />
           <Typography variant='h5'>{auth.currentUser?.displayName}</Typography>
           <Typography variant='caption'>{auth.currentUser?.email}</Typography>
           <Divider variant='middle' sx={{ width: '100%', my: 2 }} />
           <Button type='button' onClick={handleSignOut} color='error'>Sign Out</Button>
-        </Box>
+        </Container>
       </Drawer>
-    </Container>
+    </Container >
   )
 }
 
@@ -62,6 +72,8 @@ const ConversationItem: FunctionComponent<{ conversation: DocumentData }> = ({ c
   const navigate = useNavigate();
   const [name, updateName] = useState('');
   const [profilePicture, updateProfilePicture] = useState('');
+
+  const [status, toggleStatus] = useState(false);
 
   const [message, loading, error] = useCollectionData(query(collection(firestore, 'conversations', conversation.id, 'messages'), orderBy('sentAt', 'desc'), limit(1)));
 
@@ -74,6 +86,7 @@ const ConversationItem: FunctionComponent<{ conversation: DocumentData }> = ({ c
         .then(result => {
           updateName(result.data()?.displayName);
           updateProfilePicture(result.data()?.photoURL)
+          toggleStatus(result.data()?.isActive)
         })
         .catch(error => console.error(error))
     }
@@ -82,7 +95,7 @@ const ConversationItem: FunctionComponent<{ conversation: DocumentData }> = ({ c
   return (
     <ListItem>
       <ListItemButton onClick={() => navigate('/conversation/' + conversation.id, { replace: false })}>
-        <ListItemAvatar>
+        <ListItemAvatar style={{ position: 'relative' }}>
           <Avatar variant='rounded' src={profilePicture} />
         </ListItemAvatar>
         <ListItemText
@@ -91,9 +104,10 @@ const ConversationItem: FunctionComponent<{ conversation: DocumentData }> = ({ c
           primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
         />
         <ListItemSecondaryAction>
-          <Typography variant='subtitle2'>
+          <Typography variant='subtitle2' style={{ fontSize: 10 }}>
             {message?.length === 0 ? '' : message?.map(doc => moment(new Timestamp(doc.sentAt.seconds, doc.sentAt.nanoseconds).toDate()).fromNow())}
           </Typography>
+          <Chip label={status ? "ONLINE" : "OFFLINE"} color={status ? "success" : "default"} size='small' style={{ fontSize: 10 }} />
         </ListItemSecondaryAction>
       </ListItemButton>
     </ListItem>
