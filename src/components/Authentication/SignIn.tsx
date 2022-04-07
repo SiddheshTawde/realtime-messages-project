@@ -8,6 +8,7 @@ import { setDoc, doc } from 'firebase/firestore';
 import { firestore } from '../../firebase/database';
 
 import Google from './SignInWithGoogle.png';
+import Logo from './logo.png';
 
 const SignIn: FunctionComponent = () => {
     const handleGoogleSignIn = async () => {
@@ -37,12 +38,13 @@ const SignIn: FunctionComponent = () => {
     return (
         <Container component='main' className={styles['main-container']} disableGutters={true} maxWidth='xs'>
             <Box className={styles['card-container']}>
-                <Box className={styles['box-element']}>
+                <Box className={styles['box-element']} style={{ flex: 3 }}>
+                    <img src={Logo} alt="Logo" style={{ width: 196 }} />
                     <Typography variant='body1' sx={{ fontSize: 56, fontWeight: 'bold' }}>LOGO</Typography>
                 </Box>
-                <Box className={styles['box-element']}>
+                <Box className={styles['box-element']} style={{ flex: 1 }}>
                     <Button variant='text' onClick={handleGoogleSignIn}>
-                        <img src={Google} className={styles['sign-in-button']} />
+                        <img src={Google} alt="Sign in with Google" className={styles['sign-in-button']} />
                     </Button>
                 </Box>
             </Box>

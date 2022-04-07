@@ -14,10 +14,10 @@
 }
 
 .box-element {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .sign-in-button {

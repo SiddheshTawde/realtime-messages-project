@@ -65,6 +65,8 @@ function App() {
           <Route path='/add' element={user ? <Suspense fallback={<Global />}><AddUserPage /></Suspense> : <Navigate to='/sign-in' />} />
           <Route path='/conversation/:id' element={user ? <Suspense fallback={<Global />}><ConversationPage /></Suspense> : <Navigate to='/sign-in' />} />
           <Route path='/' element={user ? <Suspense fallback={<Global />}><HomePage /></Suspense> : <Navigate to='/sign-in' />} />
+
+          <Route path='*' element={<Navigate to='/sign-in' />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
