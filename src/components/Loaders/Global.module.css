@@ -1,0 +1,7 @@
+.main-conatiner {
+    display: flex !important;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 100% !important;
+}

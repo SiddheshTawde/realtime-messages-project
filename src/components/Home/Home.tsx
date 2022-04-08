@@ -1,7 +1,7 @@
-import { AppBar, Avatar, Badge, Box, Button, Chip, Container, Divider, Drawer, Fab, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
+import { AppBar, Avatar, Button, Chip, Container, Divider, Drawer, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase/auth'
-import { collection, doc, DocumentData, getDoc, limit, orderBy, query, Timestamp, updateDoc } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDoc, limit, orderBy, query, Timestamp } from 'firebase/firestore';
 import { firestore } from '../../firebase/database';
 import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -17,16 +17,6 @@ const Home = () => {
   const [profile, toggleProfile] = useState(false);
   const [conversations, loading, error] = useCollection(collection(firestore, 'conversations'));
 
-  useEffect(() => {
-    updateDoc(doc(collection(firestore, 'users'), auth.currentUser?.uid), { isActive: true, lastSignInTime: moment(Date.now()).format('llll') })
-      .catch(error => console.error(error))
-
-    return () => {
-      updateDoc(doc(collection(firestore, 'users'), auth.currentUser?.uid), { isActive: false, lastSignInTime: moment(Date.now()).format('llll') })
-        .catch(error => console.error(error))
-    }
-  }, [])
-
   const handleSignOut = async () => {
     await signOut(auth);
   }
@@ -38,12 +28,12 @@ const Home = () => {
 
           <Typography variant='h5' style={{ flex: 1, fontWeight: 'bold' }}>LOGO</Typography>
 
-          <IconButton sx={{ mr: 2, p: 2 }} onClick={() => navigate('/add', { replace: false })}>
+          <IconButton sx={{ mr: 2 }} onClick={() => navigate('/add', { replace: false })}>
             <SearchRounded />
           </IconButton>
 
           <IconButton onClick={() => toggleProfile(true)}>
-            <Avatar variant='rounded' src={auth.currentUser?.photoURL || ''} alt='Profile Avatar'></Avatar>
+            <Avatar variant='rounded' src={auth.currentUser?.photoURL || ''} alt={auth.currentUser?.displayName || ''}></Avatar>
           </IconButton>
 
         </Toolbar>
@@ -107,7 +97,7 @@ const ConversationItem: FunctionComponent<{ conversation: DocumentData }> = ({ c
           <Typography variant='subtitle2' style={{ fontSize: 10 }}>
             {message?.length === 0 ? '' : message?.map(doc => moment(new Timestamp(doc.sentAt.seconds, doc.sentAt.nanoseconds).toDate()).fromNow())}
           </Typography>
-          <Chip label={status ? "ONLINE" : "OFFLINE"} color={status ? "success" : "default"} size='small' style={{ fontSize: 10 }} />
+          {/* <Chip label={status ? "ONLINE" : "OFFLINE"} color={status ? "success" : "default"} size='small' style={{ fontSize: 10 }} /> */}
         </ListItemSecondaryAction>
       </ListItemButton>
     </ListItem>
